@@ -1,13 +1,16 @@
 #pragma once
 #include "Device.h"
-#include "T_record.h"
+#include "C_record.h"
+#include "H_record.h"
 class Sensor : public Device
 {
 private:
-	T_record* live_data;
+	C_record* live_temperature;
+	H_record* live_humidity;
 public:
 	Sensor(std::string);
 	void PrintLine();
-	T_record updateData(float);
+	C_record updateTemperature(float);
+	H_record updateHumidity(int);
 };
 

@@ -6,5 +6,6 @@ class Socket : public Device
 private:
 	Data_record* live_energy;
 public:
+	Socket(std::string);
 };
 

@@ -3,20 +3,29 @@
 Sensor::Sensor(std::string a)
 {
 	_name = a;
-	live_data = new T_record(this, 0.0f);
+	live_temperature = new C_record(this, 0.0f);
+	live_humidity = new H_record(this, 0);
 	return;
 }
 
 void Sensor::PrintLine()
 {
-	std::cout << "Sensor ";
-	live_data->PrintLine();
+	std::cout << "Sensor: " << getName() << "\n";
+	std::cout << "Temperature "; live_temperature->PrintLine(); std::cout << "C\n";
+	std::cout << "Humidity "; live_humidity->PrintLine(); std::cout << "%\n";
 	return;
 }
 
-T_record Sensor::updateData(float a)
+C_record Sensor::updateTemperature(float a)
 {
-	T_record* b = new T_record(live_data);
-	live_data->updateTemperature(a);
+	C_record* b = new C_record(live_temperature);
+	live_temperature->updateTemperature(a);
+	return b;
+}
+
+H_record Sensor::updateHumidity(int a)
+{
+	H_record* b = new H_record(live_humidity);
+	live_humidity->updateHumidity(a);
 	return b;
 }
