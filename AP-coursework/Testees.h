@@ -20,4 +20,6 @@ public:
 	Testees();
 	std::string popName();
 	int nleft;
+	~Testees();
+	void static clear();
 };

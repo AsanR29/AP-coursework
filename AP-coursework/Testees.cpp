@@ -37,3 +37,12 @@ std::string Testees::popName()
 	--nleft;
 	return name;
 }
+
+Testees::~Testees()
+{
+	_names.clear();
+}
+void Testees::clear()
+{
+	s_names.clear();
+}

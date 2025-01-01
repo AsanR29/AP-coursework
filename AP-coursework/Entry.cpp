@@ -1,53 +1,92 @@
-#include <iostream>
 #include "RecordFactory.h"
 #include "DeviceFactory.h"
-#include "Sensor.h"
 #include "Testees.h"
+#include "CL_Menu.h"
+
+
+void shutdown(Testees* test)
+{
+	delete test;
+
+	RecordFactory::dumpRecords();
+
+	RecordFactory::clear();
+	DeviceFactory::clear();
+}
 
 int main()
 {
-#ifdef _DEBUG
-	//_CrtSetBreakAlloc(165);
-	_onexit(_CrtDumpMemoryLeaks);
-#endif
-	//start
-	srand(time(nullptr));
 
+	//populating with test devices
 	Testees::loadFile("animal_names.csv");
 	Testees* test = new Testees();
 
-	std::cout << "Hello World.\n";
-	/*Sensor* test = new Sensor("test");
-	test->PrintLine();
-	C_record old_test = test->updateTemperature(15.6f);
-	test->PrintLine();
-	old_test.PrintLine();
-	H_record humid_test = test->updateHumidity(88.17f);
-	test->PrintLine();
-	old_test.PrintLine();
-	humid_test.PrintLine();*/
-
-	while (test->nleft > 0)
+	int rand_type;
+	int capacity = (test->nleft > 10) ? test->nleft - 10 : 0;
+	while (test->nleft > capacity)
 	{
-		DeviceFactory::makeDevice("sensor", test->popName());
-	}
-
-	//DeviceFactory::makeDevice("sensor", test->popName());
-	//Device* happy = DeviceFactory::getDevice("Happy");
-	//std::cout << "And its called... " << happy->getName() << "!\n";
-
-	bool play = true;
-	int menu_input;
-	while (play)
-	{
-		std::cout << "Menu options\n1) List devices\n2)\n3)\n4)\n5) Quit\n>";
-		std::cin >> menu_input;
-		switch (menu_input)
+		rand_type = rand() % 2;
+		if (rand_type == 0)
 		{
-		case 1:
-			DeviceFactory::printDeviceList();
+			DeviceFactory::makeDevice("sensor", test->popName());
+		}
+		else if (rand_type == 1)
+		{
+			DeviceFactory::makeDevice("socket", test->popName());
 		}
 	}
+
+	//program starts
+	CL_Menu::makeMenu(0,0);
+	CL_Menu* menu = CL_Menu::get();
+
+	bool play = true;
+	std::string menu_input;
+	int option_num;
+
+	std::pair<Device*, int> d_subject;
+	while (play)
+	{
+		option_num = -1;
+
+		menu->PrintLine();
+		std::cin >> option_num;
+		if (std::cin.fail())
+		{
+			std::cin.clear();
+			std::cin >> menu_input;
+		}
+		if (option_num == 4)
+		{
+			std::cin >> menu_input;
+		}
+		switch (option_num)
+		{
+		case -1:
+			break;
+		case 1:
+			DeviceFactory::printDeviceList();
+			break;
+		case 4:
+			d_subject = DeviceFactory::getDevice(menu_input);
+			if (d_subject.first != nullptr)
+			{
+				CL_Menu::makeMenu(d_subject);
+				menu = CL_Menu::get();
+			}
+			else
+			{
+				std::cout << "Couldn't find a device by that name\n";
+			}
+			break;
+		case 9:
+			play = false;
+			break;
+		}
+		std::cout << "\n" << option_num << menu_input << "\n";
+	}
+
+	shutdown(test);
 
 	return 0;
 }

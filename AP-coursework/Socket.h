@@ -1,11 +1,22 @@
 #pragma once
 #include "Device.h"
-#include "Data_record.h"
+#include "RecordFactory.h"
+
 class Socket : public Device
 {
 private:
-	Data_record* live_energy;
+	double live_energy;
+
+	void TakeEnergy();
+	void TakeSleepTimer();
 public:
-	Socket(std::string);
+	Socket(std::string name);
+
+	int TakeInput(int input);
+
+	void updateEnergy(double);
+
+	void PrintLine();
+	std::string tagline();
 };
 

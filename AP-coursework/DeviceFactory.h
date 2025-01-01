@@ -16,9 +16,13 @@ private:
 public:
 	static DeviceFactory* getFactory();
 
-	static Device* getDevice(std::string name);
+	static std::pair<Device*, int> getDevice(std::string name);
 	static Device* makeDevice(std::string type, std::string name);
 
 	static void printDeviceList();
+
+	static void clear();
+
+	~DeviceFactory();
 };
 

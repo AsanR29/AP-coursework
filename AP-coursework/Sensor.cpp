@@ -1,31 +1,96 @@
 #include "Sensor.h"
 
-Sensor::Sensor(std::string a)
+Sensor::Sensor(std::string name) : Device(name)
 {
-	_name = a;
-	live_temperature = new C_record(this, 0.0f);
-	live_humidity = new H_record(this, 0);
+	live_temperature = 0.0f;
+	live_humidity = 0;
 	return;
 }
 
+std::string Sensor::tagline()
+{
+	return "Sensor: " + _name;
+}
 void Sensor::PrintLine()
 {
-	std::cout << "Sensor: " << getName() << "\n";
-	std::cout << "Temperature "; live_temperature->PrintLine(); std::cout << "C\n";
-	std::cout << "Humidity "; live_humidity->PrintLine(); std::cout << "%\n";
+	std::cout << tagline() << "\n";
+	std::cout << "Temperature " << live_temperature << "C\n";
+	std::cout << "Humidity " << live_humidity << "%\n";
 	return;
 }
 
-C_record Sensor::updateTemperature(float a)
+int Sensor::TakeInput(int input)
 {
-	C_record* b = new C_record(live_temperature);
-	live_temperature->updateTemperature(a);
-	return b;
+	switch (input)
+	{
+		case 0:
+			TakeTemperature();
+			break;
+		case 1:
+			TakeHumidity();
+			break;
+		case 2:
+			TakeDeviceName();
+			break;
+		case 3:
+			return 0;
+	}
+	return 1;
 }
 
-H_record Sensor::updateHumidity(int a)
+void Sensor::TakeTemperature()
 {
-	H_record* b = new H_record(live_humidity);
-	live_humidity->updateHumidity(a);
-	return b;
+	std::string empty;
+	double new_temp;
+	bool loop = true;
+	while (loop)
+	{
+		std::cin >> new_temp;
+		if (std::cin.fail())
+		{
+			std::cin.clear();
+			std::cin >> empty;
+			std::cout << "Invalid temperature.\n";
+		}
+		else {
+			loop = false;
+		}
+	}
+	updateTemperature(new_temp);
+	return;
+}
+void Sensor::TakeHumidity()
+{
+	std::string empty;
+	int new_humidity;
+	bool loop = true;
+	while (loop)
+	{
+		std::cin >> new_humidity;
+		if (std::cin.fail())
+		{
+			std::cin.clear();
+			std::cin >> empty;
+			std::cout << "Invalid Humidity.\n";
+		}
+		else {
+			loop = false;
+		}
+	}
+	updateHumidity(new_humidity);
+	return;
+}
+
+void Sensor::updateTemperature(double a)
+{
+	RecordFactory::makeRecord(_name, 'C', std::to_string(live_temperature));
+	live_temperature = a;
+	return;
+}
+
+void Sensor::updateHumidity(int a)
+{
+	RecordFactory::makeRecord(_name, '%', std::to_string(live_humidity));
+	live_humidity = a;
+	return;
 }

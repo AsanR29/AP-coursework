@@ -1,0 +1,32 @@
+#pragma once
+
+#include <stack>
+#include <vector>
+#include <iostream>
+
+//devices
+#include "Sensor.h"
+#include "Socket.h"
+class CL_Menu
+{
+private:
+	static std::vector<std::vector<std::string>> menu_text;
+	static std::vector<void (Sensor::*)()> sensor_functions;
+	static std::vector<std::string> sensor_text;
+	static std::vector<std::string> socket_text;
+
+	std::pair<int,int> id;
+	CL_Menu(int a, int b);
+public:
+	static std::stack<CL_Menu> menu_stack;
+	static void makeMenu(int a, int b);
+	static void makeMenu(std::pair<Device*, int>);
+
+	static CL_Menu* get();
+	static void close();
+	static void clear();
+
+	void PrintLine();
+
+};
+
