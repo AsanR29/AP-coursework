@@ -7,7 +7,12 @@ std::vector<std::vector<std::string>> CL_Menu::menu_text
 	},
 	{
 		"1: Update Temperature\n2: Update Humidity\n3: Change device name\n4: Return\n",	//0 : Sensor
-		"1: Update Energy Usage\n2: Sleep Timer\n3: Change device name\n4: Return\n",								//1: Socket
+		"1: Update Energy Usage\n2: Sleep Timer\n3: Change device name\n4: Return\n",		//1: Socket
+		"",	//2
+		"",	//3
+		"",	//4
+		"",	//5
+		"1: Add sensor\n2: Add Socket\n3: Add X\n4: Add X\n5: Add X\n6: Add X\n7: Return\n", //6: Make Device
 	},
 };
 
@@ -15,11 +20,13 @@ std::vector<std::string> CL_Menu::sensor_text
 {
 	"Enter the new Temperature value\n",
 	"Enter the new Humidity value\n",
+	"Enter the new Device name\n",
 };
 std::vector<std::string> CL_Menu::socket_text
 {
 	"Enter the new Energy usage value\n",
 	"Enter how long the socket should Sleep for\n",
+	"Enter the new Device name\n",
 };
 //void (Sensor::*sensor_f1)() = &Sensor::updateTemperature;
 //typedef void (Sensor::* function_p)(void);
@@ -40,6 +47,19 @@ void CL_Menu::makeMenu(int a, int b)
 	CL_Menu m(a, b);
 	menu_stack.push(m);
 	return;
+}
+
+int CL_Menu::input_int()
+{
+	std::string dump;
+	int num = -1;
+	std::cin >> num;
+	if (std::cin.fail())
+	{
+		std::cin.clear();
+		std::cin >> dump;
+	}
+	return num;
 }
 
 void CL_Menu::makeMenu(std::pair<Device*, int> subject)
@@ -65,23 +85,15 @@ void CL_Menu::makeMenu(std::pair<Device*, int> subject)
 				std::cout << sensor_p->tagline() << "\n";
 				menu->PrintLine();
 
-				std::cin >> option_num;
+				option_num = input_int();
 				--option_num;
-				if (std::cin.fail())
-				{
-					std::cin.clear();
-					std::cin >> menu_input;
-				}
-				else
-				{
-					try {
-						std::cout << sensor_text.at(option_num);
-					}
-					catch (std::out_of_range) {}
-
+				if(0 <= option_num && 3 >= option_num){
+					if (option_num < 3) { std::cout << sensor_text.at(option_num); }
 					response_num = sensor_p->TakeInput(option_num);
+					if (response_num == 2) { DeviceFactory::renameDevice(subject.second, sensor_p->getName()); }
 					if (response_num == 0) { play = false; }
 				}
+				//catch (std::out_of_range) {}
 			}
 			break;
 		case 1:	//Socket
@@ -94,27 +106,38 @@ void CL_Menu::makeMenu(std::pair<Device*, int> subject)
 				std::cout << socket_p->tagline() << "\n";
 				menu->PrintLine();
 
-				std::cin >> option_num;
+				option_num = input_int();
 				--option_num;
-				if (std::cin.fail())
-				{
-					std::cin.clear();
-					std::cin >> menu_input;
-				}
-				else
-				{
-					try {
-						std::cout << socket_text.at(option_num);
-					}
-					catch (std::out_of_range) {}
-
+				if(0 <= option_num && 3 >= option_num){
+					if (option_num < 3) { std::cout << socket_text.at(option_num); }
 					response_num = socket_p->TakeInput(option_num);
+					if (response_num == 2) { DeviceFactory::renameDevice(subject.second, socket_p->getName()); }
 					if (response_num == 0) { play = false; }
 				}
+				//catch (std::out_of_range) {}
 			}
 			break;
 	}
 	CL_Menu::close();
+	return;
+}
+
+void CL_Menu::newDeviceMenu()
+{
+	int type = -1;
+	while (type < 1 || type > 7)
+	{
+		type = input_int();
+	}
+	--type;
+	if (type == 6) { return; }
+
+	DeviceFactory* factory = DeviceFactory::getFactory();
+	std::cout << "Enter the new Device name\n";
+	std::string device_name = factory->TakeDeviceName(type);
+	Device* subject_d = DeviceFactory::makeDevice(type, device_name);
+
+	CL_Menu::makeMenu(std::make_pair(subject_d, type));
 	return;
 }
 

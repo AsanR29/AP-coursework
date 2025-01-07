@@ -16,8 +16,8 @@ int Socket::TakeInput(int input)
 		TakeSleepTimer();
 		break;
 	case 2:
-		TakeDeviceName();
-		break;
+		//TakeDeviceName();
+		return 2;
 	case 3:
 		return 0;
 	}
@@ -53,8 +53,8 @@ void Socket::TakeSleepTimer()
 
 void Socket::updateEnergy(double a)
 {
-	RecordFactory::makeRecord(_name, 'W', std::to_string(live_energy));
 	live_energy = a;
+	RecordFactory::makeRecord(_name, 'W', std::to_string(live_energy));
 	return;
 }
 

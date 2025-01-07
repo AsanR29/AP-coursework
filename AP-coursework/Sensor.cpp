@@ -30,8 +30,8 @@ int Sensor::TakeInput(int input)
 			TakeHumidity();
 			break;
 		case 2:
-			TakeDeviceName();
-			break;
+			//TakeDeviceName();
+			return 2;
 		case 3:
 			return 0;
 	}
@@ -83,14 +83,14 @@ void Sensor::TakeHumidity()
 
 void Sensor::updateTemperature(double a)
 {
-	RecordFactory::makeRecord(_name, 'C', std::to_string(live_temperature));
 	live_temperature = a;
+	RecordFactory::makeRecord(_name, 'C', std::to_string(live_temperature));
 	return;
 }
 
 void Sensor::updateHumidity(int a)
 {
-	RecordFactory::makeRecord(_name, '%', std::to_string(live_humidity));
 	live_humidity = a;
+	RecordFactory::makeRecord(_name, '%', std::to_string(live_humidity));
 	return;
 }

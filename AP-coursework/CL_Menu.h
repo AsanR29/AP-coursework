@@ -5,8 +5,7 @@
 #include <iostream>
 
 //devices
-#include "Sensor.h"
-#include "Socket.h"
+#include "DeviceFactory.h"
 class CL_Menu
 {
 private:
@@ -22,9 +21,13 @@ public:
 	static void makeMenu(int a, int b);
 	static void makeMenu(std::pair<Device*, int>);
 
+	static int input_int();
+
 	static CL_Menu* get();
 	static void close();
 	static void clear();
+
+	void newDeviceMenu();
 
 	void PrintLine();
 

@@ -4,6 +4,7 @@
 #include "CL_Menu.h"
 
 
+
 void shutdown(Testees* test)
 {
 	delete test;
@@ -16,7 +17,8 @@ void shutdown(Testees* test)
 
 int main()
 {
-
+	std::cout << "Hello World\n";
+	srand(time(nullptr));
 	//populating with test devices
 	Testees::loadFile("animal_names.csv");
 	Testees* test = new Testees();
@@ -26,14 +28,7 @@ int main()
 	while (test->nleft > capacity)
 	{
 		rand_type = rand() % 2;
-		if (rand_type == 0)
-		{
-			DeviceFactory::makeDevice("sensor", test->popName());
-		}
-		else if (rand_type == 1)
-		{
-			DeviceFactory::makeDevice("socket", test->popName());
-		}
+		DeviceFactory::makeDevice(rand_type, test->popName());
 	}
 
 	//program starts
@@ -65,7 +60,12 @@ int main()
 		case -1:
 			break;
 		case 1:
+			system("cls");
 			DeviceFactory::printDeviceList();
+			break;
+		case 2:
+			system("cls");
+			DeviceFactory::printDeviceByName();
 			break;
 		case 4:
 			d_subject = DeviceFactory::getDevice(menu_input);
@@ -78,6 +78,15 @@ int main()
 			{
 				std::cout << "Couldn't find a device by that name\n";
 			}
+			break;
+		case 5:
+			CL_Menu::makeMenu(1,6);
+			menu = CL_Menu::get();
+			menu->PrintLine();
+			menu->newDeviceMenu();
+
+			CL_Menu::close();
+			menu = CL_Menu::get();
 			break;
 		case 9:
 			play = false;
