@@ -13,6 +13,7 @@ private:
 	static std::vector<void (Sensor::*)()> sensor_functions;
 	static std::vector<std::string> sensor_text;
 	static std::vector<std::string> socket_text;
+	static std::vector<std::string> schedule_text;
 
 	std::pair<int,int> id;
 	CL_Menu(int a, int b);
@@ -20,8 +21,9 @@ public:
 	static std::stack<CL_Menu> menu_stack;
 	static void makeMenu(int a, int b);
 	static void makeMenu(std::pair<Device*, int>);
+	static void scheduleMenu(Schedule*, Device*, int);
 
-	static int input_int();
+	//static int input_int();
 
 	static CL_Menu* get();
 	static void close();

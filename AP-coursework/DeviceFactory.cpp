@@ -124,13 +124,13 @@ void DeviceFactory::printDeviceList()
 	Sensor* sensor_p;
 	Socket* socket_p;
 
-	for (sensor_it = factory->sensor_map.begin(); sensor_it != factory->sensor_map.end(); sensor_it++)
+	for (sensor_it = factory->sensor_map.cbegin(); sensor_it != factory->sensor_map.cend(); sensor_it++)
 	{
 		sensor_p = (*sensor_it).second;
 		sensor_p->PrintLine();
 		std::cout << "\n";
 	}
-	for (socket_it = factory->socket_map.begin(); socket_it != factory->socket_map.end(); socket_it++)
+	for (socket_it = factory->socket_map.cbegin(); socket_it != factory->socket_map.cend(); socket_it++)
 	{
 		socket_p = (*socket_it).second;
 		socket_p->PrintLine();

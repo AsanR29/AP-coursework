@@ -3,7 +3,13 @@
 Socket::Socket(std::string name) : Device(name)
 {
 	live_energy = 0.0f;
+	schedule = Schedule();
 };
+
+Schedule* Socket::GetSchedule()
+{
+	return &schedule;
+}
 
 int Socket::TakeInput(int input)
 {
@@ -13,8 +19,7 @@ int Socket::TakeInput(int input)
 		TakeEnergy();
 		break;
 	case 1:
-		TakeSleepTimer();
-		break;
+		return 3;
 	case 2:
 		//TakeDeviceName();
 		return 2;
@@ -45,11 +50,6 @@ void Socket::TakeEnergy()
 	updateEnergy(new_energy);
 	return;
 }
-void Socket::TakeSleepTimer()
-{
-	return;
-}
-
 
 void Socket::updateEnergy(double a)
 {
