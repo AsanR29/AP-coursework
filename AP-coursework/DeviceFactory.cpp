@@ -188,6 +188,23 @@ void DeviceFactory::printDeviceByName()
 
 }
 
+void DeviceFactory::setSchedules()
+{
+	DeviceFactory* factory = DeviceFactory::getFactory();
+	std::map<std::string, Socket*>::iterator socket_it;
+
+	Socket* socket_p;
+
+	//Schedule* schedule;
+	for (socket_it = factory->socket_map.begin(); socket_it != factory->socket_map.end(); socket_it++)
+	{
+		socket_p = (*socket_it).second;
+		socket_p->GetSchedule()->setTriggers();
+		//schedule->setTriggers();
+	}
+	return;
+}
+
 DeviceFactory::~DeviceFactory()
 {
 	std::map<std::string, Sensor*>::iterator sensor_it;

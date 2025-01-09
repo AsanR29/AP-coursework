@@ -11,6 +11,7 @@ private:
 public:
 	void Use();
 	std::chrono::time_point<std::chrono::system_clock> GetTime() const;
+	void ResetTime(std::chrono::time_point<std::chrono::system_clock> time);
 
 	Trigger(Device* device, int type, std::chrono::time_point<std::chrono::system_clock> time);
 	void PrintLine();

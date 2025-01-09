@@ -32,6 +32,10 @@ std::chrono::time_point<std::chrono::system_clock> Trigger::GetTime() const
 {
 	return setoff_time;
 }
+void Trigger::ResetTime(std::chrono::time_point<std::chrono::system_clock> time)
+{
+	setoff_time = time; return;
+}
 
 bool Trigger::operator<(Trigger b)
 {
@@ -41,7 +45,7 @@ bool Trigger::operator<(Trigger b)
 
 void Trigger::PrintLine()
 {
-	std::cout << setoff_time << ": ";
+	//std::cout << setoff_time << ": ";
 	if (action == &setOff) { std::cout << "Turn off"; }
 	else { std::cout << "Turn on"; }
 	return;

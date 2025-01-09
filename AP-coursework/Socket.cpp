@@ -64,5 +64,5 @@ std::string Socket::tagline()
 }
 void Socket::PrintLine()
 {
-	std::cout << tagline() << "\n" << live_energy << "kWh\n";
+	std::cout << tagline() << " " << ((status)?" Status:On":"Status:Off") << "\n" << live_energy << "kWh\n";
 }

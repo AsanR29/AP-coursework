@@ -35,14 +35,8 @@ std::vector<std::string> CL_Menu::schedule_text
 	"\n",
 	"Enter when the Socket should begin sleeping from, in [23:59] format\n",
 	"Cleared\n",
-}
-//void (Sensor::*sensor_f1)() = &Sensor::updateTemperature;
-//typedef void (Sensor::* function_p)(void);
-//std::vector<function_p> CL_Menu::sensor_functions
-//{
-//	&Sensor::updateTemperature,		//0
-//	&Sensor::updateHumidity,		//1
-//};
+};
+
 
 std::stack<CL_Menu> CL_Menu::menu_stack;
 
@@ -107,7 +101,10 @@ void CL_Menu::makeMenu(std::pair<Device*, int> subject)
 					if (option_num < 3) { std::cout << socket_text.at(option_num); }
 					response_num = socket_p->TakeInput(option_num);
 					if (response_num == 2) { DeviceFactory::renameDevice(subject.second, socket_p->getName()); }
-					if (response_num == 3) { CL_Menu::scheduleMenu(socket_p->GetSchedule(), subject.first, 7); }
+					if (response_num == 3) {
+						CL_Menu::scheduleMenu(socket_p->GetSchedule(), subject.first, 7);
+						menu = CL_Menu::get();
+					}
 					if (response_num == 0) { play = false; }
 				}
 				//catch (std::out_of_range) {}
@@ -164,6 +161,7 @@ void CL_Menu::scheduleMenu(Schedule* schedule, Device* device, int type)
 		}
 		//catch (std::out_of_range) {}
 	}
+	CL_Menu::close();
 	return;
 }
 

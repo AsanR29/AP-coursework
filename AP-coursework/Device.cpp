@@ -41,7 +41,7 @@ void Device::Off()
 {
 	status = false;
 }
-void Device::Oneclick()
+void Device::OneClick()
 {
 	if (status) { Off(); }
 	else { On(); }

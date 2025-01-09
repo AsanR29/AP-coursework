@@ -10,6 +10,13 @@ Trigger* TriggerFactory::makeTrigger(Device* device, int type, std::chrono::minu
 	trigger_set.insert(trigger_p);
 	return trigger_p;
 }
+void TriggerFactory::resetTrigger(Trigger* trigger_p, std::chrono::minutes time)
+{
+	std::chrono::time_point<std::chrono::system_clock> setoff_time = present_day + time;
+	trigger_p->ResetTime(setoff_time);
+	trigger_set.insert(trigger_p);
+	return;
+}
 
 void TriggerFactory::fireAll()
 {
@@ -25,5 +32,15 @@ void TriggerFactory::fireAll()
 		}
 		trigger_p->Use();
 	}
+	return;
+}
+
+std::chrono::time_point<std::chrono::system_clock> TriggerFactory::getPresentDay() { return present_day; }
+void TriggerFactory::setPresentDay(std::chrono::time_point<std::chrono::system_clock> time) { present_day = time; }
+//std::chrono::time_point<std::chrono::system_clock> TriggerFactory::getLastTime() { return last_time; }
+void TriggerFactory::updateTime(std::chrono::time_point<std::chrono::system_clock> time)
+{
+	last_time = time;
+	fireAll();
 	return;
 }

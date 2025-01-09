@@ -10,7 +10,7 @@ class CL_Menu
 {
 private:
 	static std::vector<std::vector<std::string>> menu_text;
-	static std::vector<void (Sensor::*)()> sensor_functions;
+	//static std::vector<void (Sensor::*)()> sensor_functions;
 	static std::vector<std::string> sensor_text;
 	static std::vector<std::string> socket_text;
 	static std::vector<std::string> schedule_text;

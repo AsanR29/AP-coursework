@@ -9,6 +9,7 @@ private:
 public:
 	Schedule();
 	void addTrigger(Device* device, int type, std::chrono::minutes time);
+	void setTriggers();
 
 	template <typename T>
 	void TakeSleepTimer(T*);

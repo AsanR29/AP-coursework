@@ -22,6 +22,7 @@ public:
 
 	static void printDeviceList();
 	static void printDeviceByName();
+	static void setSchedules();
 
 	static void clear();
 

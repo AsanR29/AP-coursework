@@ -21,7 +21,7 @@ public:
 	virtual void PrintLine() = 0;
 	virtual std::string tagline() = 0;
 	virtual int TakeInput(int) = 0;
-	//irtual void OneClick() = 0;
+	void OneClick();
 	void On();
 	void Off();
 };
