@@ -17,13 +17,19 @@ public:
 	static DeviceFactory* getFactory();
 
 	static std::pair<Device*, int> getDevice(std::string name);
-	static Device* makeDevice(int type, std::string name);
+
+	template <class device_type>
+	static device_type* makeDevice(std::string name, int type = -1);
+
 	static void renameDevice(int type, std::string name);
+	static Schedule* getSchedule(Device* device, int type);
 
 	static void printDeviceList();
 	static void printDeviceByName();
 	static void setSchedules();
 
+	static void dumpDevices();
+	static void loadDevices();
 	static void clear();
 
 	std::string TakeDeviceName(int type);

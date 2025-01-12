@@ -1,4 +1,5 @@
 #include "TriggerFactory.h"
+
 std::chrono::time_point<std::chrono::system_clock> TriggerFactory::present_day = std::chrono::floor<std::chrono::days>(std::chrono::system_clock::now());
 std::chrono::time_point<std::chrono::system_clock> TriggerFactory::last_time = std::chrono::system_clock::now();
 std::multiset<Trigger*> TriggerFactory::trigger_set = std::multiset<Trigger*>();

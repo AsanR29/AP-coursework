@@ -5,6 +5,10 @@ Socket::Socket(std::string name) : Device(name)
 	live_energy = 0.0f;
 	schedule = Schedule();
 };
+Socket::Socket(std::string name, bool status, double energy) : Device(name, status), live_energy(energy)
+{
+	schedule = Schedule();
+}
 
 Schedule* Socket::GetSchedule()
 {
@@ -65,4 +69,20 @@ std::string Socket::tagline()
 void Socket::PrintLine()
 {
 	std::cout << tagline() << " " << ((status)?" Status:On":"Status:Off") << "\n" << live_energy << "kWh\n";
+}
+std::ofstream& operator<<(std::ofstream& ost, Socket& device)
+{
+	ost << device._name << " , " << (device.status ? 1 : 0) << " " << device.live_energy << "\n";
+	return ost;
+}
+std::ifstream& operator>>(std::ifstream& ist, Socket& device)
+{
+	//std::string devicename = "";
+	//bool status;
+	//double energy;
+
+	//input_name<std::ifstream>(ist, devicename, ",");
+	ist >> device.status >> device.live_energy;
+	//device = Socket(devicename, status, energy);
+	return ist;
 }

@@ -128,7 +128,7 @@ void CL_Menu::newDeviceMenu()
 	DeviceFactory* factory = DeviceFactory::getFactory();
 	std::cout << "Enter the new Device name\n";
 	std::string device_name = factory->TakeDeviceName(type);
-	Device* subject_d = DeviceFactory::makeDevice(type, device_name);
+	Device* subject_d = DeviceFactory::makeDevice<Device>(device_name, type);
 
 	CL_Menu::makeMenu(std::make_pair(subject_d, type));
 	return;

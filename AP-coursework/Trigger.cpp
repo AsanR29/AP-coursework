@@ -8,6 +8,15 @@ void setOn(Device* device)
 {
 	device->On();
 }
+std::map<action_type, int> const Trigger::action_to_int = std::map<action_type, int>
+{
+	{&setOff, 0},
+	{&setOn, 1},
+};
+int Trigger::toInt()
+{
+	return action_to_int.at(action);
+}
 
 Trigger::Trigger(Device* device, int type, std::chrono::time_point<std::chrono::system_clock> time)
 {
@@ -46,7 +55,10 @@ bool Trigger::operator<(Trigger b)
 void Trigger::PrintLine()
 {
 	//std::cout << setoff_time << ": ";
-	if (action == &setOff) { std::cout << "Turn off"; }
-	else { std::cout << "Turn on"; }
+	switch (action_to_int.at(action))
+	{
+	case 0: std::cout << "Turn off"; break;
+	case 1: std::cout << "Turn on"; break;
+	}
 	return;
 }

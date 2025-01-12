@@ -2,6 +2,9 @@
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <filesystem>
+#include <fstream>
+#include <map>
 
 class Device
 {
@@ -10,11 +13,11 @@ protected:
 	std::string _name;
 	bool status;	//true=on, false=off
 
-	void TakeDeviceName();
 	void Oneclick();
 public:
 	Device();
-	Device(std::string);
+	Device(std::string name);
+	Device(std::string name, bool status);
 	std::string getName();
 	void updateDeviceName(std::string);
 
@@ -31,3 +34,20 @@ void input_int(int& output);
 void input_int(int& output, std::string error_response);
 void input_timeofday(int& output_hour, int& output_min, std::string error_response);
 void input_int_inrange(int& output, int max_included);
+void input_string(std::string& output);
+
+template<typename stream>
+void input_name(stream& st, std::string& output, std::string delimiter)
+{
+	output = "";
+	std::string inp{ "" };
+	bool space = false;
+	while (st >> inp)
+	{
+		if (inp == delimiter) { break; }
+		if (space) { output += " "; }
+		output += inp;
+		space = true;
+	}
+	return;
+}

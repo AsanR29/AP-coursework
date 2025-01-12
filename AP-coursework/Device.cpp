@@ -1,7 +1,8 @@
 #include "Device.h"
 
-Device::Device() {};
-Device::Device(std::string a) : _name(a), status(false) {};
+Device::Device() : status(false) {};
+Device::Device(std::string name) : _name(name), status(false) {};
+Device::Device(std::string name, bool status) : _name(name), status(status) {};
 
 std::string Device::getName()
 {
@@ -11,25 +12,6 @@ std::string Device::getName()
 void Device::updateDeviceName(std::string name)
 {
 	_name = name;
-	return;
-}
-
-void Device::TakeDeviceName()
-{
-	std::string new_name;
-	bool loop = true;
-	while (loop)
-	{
-		std::cin >> new_name;
-		if (new_name.find('|'))
-		{
-			std::cout << "Invalid device name.\n";
-		}
-		else {
-			loop = false;
-		}
-	}
-	updateDeviceName(new_name);
 	return;
 }
 
@@ -86,7 +68,7 @@ void input_timeofday(int& output_hour, int& output_min, std::string error_respon
 		if (failure) { std::cout << error_response; }
 		failure = true;
 
-		getline(std::cin, input);
+		input_string(input);
 		colon_index = input.find(":");
 		try {
 			output_hour = std::stoi(input.substr(0, colon_index));
@@ -116,4 +98,19 @@ void input_int_inrange(int& output, int max_included)
 		std::cin >> output;
 	}
 	//return output;
+}
+void input_string(std::string& output)	//this is a replacement for getline() because getline messes everything else up
+{
+	output = "";
+	std::string inp{ "" };
+	bool space = false;
+	while (std::cin >> inp)
+	{
+		if (space) { output += " "; }
+		output += inp;
+		space = true;
+		inp = std::cin.peek();
+		if (inp == "\n") { break; }
+	}
+	return;
 }

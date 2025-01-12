@@ -1,11 +1,13 @@
 #include "Sensor.h"
 
+Sensor::Sensor() {};
 Sensor::Sensor(std::string name) : Device(name)
 {
 	live_temperature = 0.0f;
 	live_humidity = 0;
 	return;
 }
+Sensor::Sensor(std::string name, double temperature, int humidity) : Device(name), live_temperature(temperature), live_humidity(humidity) {};
 
 std::string Sensor::tagline()
 {
@@ -93,4 +95,19 @@ void Sensor::updateHumidity(int a)
 	live_humidity = a;
 	RecordFactory::makeRecord(_name, '%', std::to_string(live_humidity));
 	return;
+}
+
+std::ofstream& operator<<(std::ofstream& ost, Sensor& device)
+{
+	ost << device._name << " , " << device.live_temperature << " " << device.live_humidity << "\n";
+	return ost;
+}
+std::ifstream& operator>>(std::ifstream& ist, Sensor& device)
+{
+	//std::string devicename;
+
+	//input_name<std::ifstream>(ist, devicename, ",");
+	ist >> device.live_temperature >> device.live_humidity;
+	//device = Sensor(devicename, temperature, humidity);
+	return ist;
 }

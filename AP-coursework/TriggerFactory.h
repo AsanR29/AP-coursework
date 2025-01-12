@@ -3,14 +3,6 @@
 
 #include "Trigger.h"
 
-//struct TriggerComp
-//{
-//	bool operator()(Trigger* a, Trigger* b)
-//	{
-//		
-//	}
-//};
-
 class TriggerFactory
 {
 private:
@@ -20,6 +12,8 @@ private:
 	//int std::multiset<Trigger*>::key_comp();
 	static void fireAll();
 public:
+	static const std::map<action_type, int> action_to_int;
+
 	static Trigger* makeTrigger(Device* device, int type, std::chrono::minutes time);
 	static void resetTrigger(Trigger* trigger_p, std::chrono::minutes time);
 	static std::chrono::time_point<std::chrono::system_clock> getPresentDay();

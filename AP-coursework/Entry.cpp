@@ -8,21 +8,45 @@ void updatetime()
 	std::chrono::time_point<std::chrono::system_clock> present_time = std::chrono::system_clock::now();
 	std::chrono::time_point<std::chrono::system_clock> present_day = std::chrono::floor<std::chrono::days>(present_time);
 
+	std::chrono::time_point<std::chrono::system_clock> yesterday = TriggerFactory::getPresentDay();
 	TriggerFactory::updateTime(present_time);
-	if (present_day != TriggerFactory::getPresentDay())
+	if (present_day != yesterday)	//then its a new day
 	{
 		TriggerFactory::setPresentDay(present_day);
 		DeviceFactory::setSchedules();
 		//writing records from a collection to a file
+		RecordFactory::recordDay(yesterday, present_day);
 	}
 	return;
 }
 
+Testees* startup()
+{
+	srand(time(nullptr));
+
+	Testees::loadFile("animal_names.csv");
+	Testees* test = new Testees();
+
+	int rand_type;
+	int capacity = (test->nleft > 10) ? test->nleft - 10 : 0;
+	/*while (test->nleft > capacity)
+	{
+		rand_type = rand() % 2;
+		DeviceFactory::makeDevice<Device>(test->popName(), rand_type);
+	}*/
+	DeviceFactory::loadDevices();
+
+	RecordFactory::loadRecords("present_day.txt");
+	std::filesystem::remove("present_day.txt");
+	RecordFactory::recordDays(TriggerFactory::getPresentDay());
+	return test;
+}
 void shutdown(Testees* test)
 {
 	delete test;
 
 	RecordFactory::dumpRecords();
+	DeviceFactory::dumpDevices();
 
 	RecordFactory::clear();
 	DeviceFactory::clear();
@@ -30,19 +54,8 @@ void shutdown(Testees* test)
 
 int main()
 {
-	std::cout << "Hello World\n";
-	srand(time(nullptr));
 	//populating with test devices
-	Testees::loadFile("animal_names.csv");
-	Testees* test = new Testees();
-
-	int rand_type;
-	int capacity = (test->nleft > 10) ? test->nleft - 10 : 0;
-	while (test->nleft > capacity)
-	{
-		rand_type = rand() % 2;
-		DeviceFactory::makeDevice(rand_type, test->popName());
-	}
+	Testees* test = startup();
 
 	//program starts
 	CL_Menu::makeMenu(0,0);

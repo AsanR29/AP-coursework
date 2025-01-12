@@ -13,6 +13,7 @@ private:
 	//void TakeSleepTimer();
 public:
 	Socket(std::string name);
+	Socket(std::string name, bool status, double energy);
 	Schedule* GetSchedule();
 
 	int TakeInput(int input);
@@ -21,5 +22,8 @@ public:
 
 	void PrintLine();
 	std::string tagline();
+	
+	friend std::ofstream& operator<<(std::ofstream& ost, Socket& device);
+	friend std::ifstream& operator>>(std::ifstream& ist, Socket& device);
 };
 

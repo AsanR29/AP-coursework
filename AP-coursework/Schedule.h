@@ -1,6 +1,5 @@
 #pragma once
 #include "TriggerFactory.h"
-#include <map>
 
 class Schedule
 {
@@ -19,4 +18,6 @@ public:
 
 	int TakeInput(Device* device, int input, int type);
 	void printSchedule();
+
+	friend std::ofstream& operator<<(std::ofstream& ost, Schedule& schedule);
 };

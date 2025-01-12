@@ -112,3 +112,17 @@ void Schedule::printSchedule()
 	}
 	return;
 }
+
+std::ofstream& operator<<(std::ofstream& ost, Schedule& schedule)
+{
+	ost << " " << schedule.trigger_set.size() << "\n";
+	
+	std::map<std::chrono::minutes, Trigger*>::iterator trigger_it;
+	Trigger* trigger_p;
+	for (trigger_it = schedule.trigger_set.begin(); trigger_it != schedule.trigger_set.end(); trigger_it++)
+	{
+		trigger_p = (*trigger_it).second;
+		ost << trigger_p->toInt() << " " << (*trigger_it).first.count() << "\n";
+	}
+	return ost;
+}
