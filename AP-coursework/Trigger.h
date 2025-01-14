@@ -13,14 +13,14 @@ public:
 	static const std::map<action_type, int> action_to_int;
 	int toInt();
 
-	void Use();
+	void Use() const;
 	std::chrono::time_point<std::chrono::system_clock> GetTime() const;
 	void ResetTime(std::chrono::time_point<std::chrono::system_clock> time);
 
 	Trigger(Device* device, int type, std::chrono::time_point<std::chrono::system_clock> time);
-	void PrintLine();
+	void PrintLine() const;
 
-	bool operator<(Trigger b);
+	bool operator<(const Trigger b) const;
 };
 
 void setOn(Device* device);

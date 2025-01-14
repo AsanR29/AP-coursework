@@ -16,19 +16,19 @@ void updatetime()
 		DeviceFactory::setSchedules();
 		//writing records from a collection to a file
 		RecordFactory::recordDay(yesterday, present_day);
-	}
+	} 
 	return;
 }
 
-Testees* startup()
+void startup()
 {
 	srand(time(nullptr));
 
-	Testees::loadFile("animal_names.csv");
-	Testees* test = new Testees();
+	//Testees::loadFile("animal_names.csv");
+	//Testees* test = new Testees();
 
-	int rand_type;
-	int capacity = (test->nleft > 10) ? test->nleft - 10 : 0;
+	//int rand_type;
+	//int capacity = (test->nleft > 10) ? test->nleft - 10 : 0;
 	/*while (test->nleft > capacity)
 	{
 		rand_type = rand() % 2;
@@ -39,23 +39,30 @@ Testees* startup()
 	RecordFactory::loadRecords("present_day.txt");
 	std::filesystem::remove("present_day.txt");
 	RecordFactory::recordDays(TriggerFactory::getPresentDay());
-	return test;
+	//return test;
+	return;
 }
-void shutdown(Testees* test)
+//void shutdown(Testees* test)
+void shutdown()
 {
-	delete test;
+	//delete test;
 
 	RecordFactory::dumpRecords();
 	DeviceFactory::dumpDevices();
 
 	RecordFactory::clear();
 	DeviceFactory::clear();
+
+	TriggerFactory::clear();
+	CL_Menu::clear();
 }
 
 int main()
 {
+	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//populating with test devices
-	Testees* test = startup();
+	//Testees* test = startup();
+	startup();
 
 	//program starts
 	CL_Menu::makeMenu(0,0);
@@ -75,12 +82,12 @@ int main()
 		if (std::cin.fail())
 		{
 			std::cin.clear();
-			std::cin >> menu_input;
+			input_string(menu_input);
 			option_num = -1;
 		}
 		if (option_num == 4)
 		{
-			std::cin >> menu_input;
+			input_string(menu_input);
 		}
 		updatetime();
 		switch (option_num)
@@ -126,10 +133,10 @@ int main()
 			play = false;
 			break;
 		}
-		//std::cout << "\n" << option_num << menu_input << "\n";
 	}
+
 	updatetime();
-	shutdown(test);
+	shutdown();
 
 	return 0;
 }

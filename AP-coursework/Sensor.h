@@ -5,23 +5,29 @@
 class Sensor : public Device
 {
 private:
+	//data members
 	double live_temperature;
 	int live_humidity;
 
+	//private input functions
 	void TakeTemperature();
 	void TakeHumidity();
 public:
-	Sensor();
+	//constructors
 	Sensor(std::string name);
-	Sensor(std::string name, double temperature, int humidity);
-	void PrintLine();
-	std::string tagline();
 
-	int TakeInput(int input);
-
+	//setters which create Data_records
 	void updateTemperature(double);
 	void updateHumidity(int);
+
+	//used by CL_Menu to call private methods
+	int TakeInput(int input);
+
+	//command line output
+	void PrintLine();
+	std::string tagline();
 	
+	//used for file input/output
 	friend std::ofstream& operator<<(std::ofstream& ost, Sensor& device);
 	friend std::ifstream& operator>>(std::ifstream& ist, Sensor& device);
 };

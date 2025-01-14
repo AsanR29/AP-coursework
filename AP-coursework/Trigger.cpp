@@ -33,7 +33,7 @@ Trigger::Trigger(Device* device, int type, std::chrono::time_point<std::chrono::
 	}
 }
 
-void Trigger::Use()
+void Trigger::Use() const
 {
 	action(target);
 }
@@ -46,13 +46,13 @@ void Trigger::ResetTime(std::chrono::time_point<std::chrono::system_clock> time)
 	setoff_time = time; return;
 }
 
-bool Trigger::operator<(Trigger b)
+bool Trigger::operator<(const Trigger b) const
 {
 	if (setoff_time < b.setoff_time) { return true; }
 	return false;
 }
 
-void Trigger::PrintLine()
+void Trigger::PrintLine() const
 {
 	//std::cout << setoff_time << ": ";
 	switch (action_to_int.at(action))

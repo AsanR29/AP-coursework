@@ -2,36 +2,37 @@
 
 std::chrono::time_point<std::chrono::system_clock> TriggerFactory::present_day = std::chrono::floor<std::chrono::days>(std::chrono::system_clock::now());
 std::chrono::time_point<std::chrono::system_clock> TriggerFactory::last_time = std::chrono::system_clock::now();
-std::multiset<Trigger*> TriggerFactory::trigger_set = std::multiset<Trigger*>();
+std::multiset<Trigger>* TriggerFactory::trigger_set = new std::multiset<Trigger>();
 
 Trigger* TriggerFactory::makeTrigger(Device* device, int type, std::chrono::minutes time)
 {
 	std::chrono::time_point<std::chrono::system_clock> setoff_time = present_day + time;
 	Trigger* trigger_p = new Trigger(device, type, setoff_time);
-	trigger_set.insert(trigger_p);
+	trigger_set->insert(*trigger_p);	//storing a copy
 	return trigger_p;
 }
 void TriggerFactory::resetTrigger(Trigger* trigger_p, std::chrono::minutes time)
 {
 	std::chrono::time_point<std::chrono::system_clock> setoff_time = present_day + time;
 	trigger_p->ResetTime(setoff_time);
-	trigger_set.insert(trigger_p);
+	trigger_set->insert(*trigger_p);	//storing a copy
 	return;
 }
 
 void TriggerFactory::fireAll()
 {
-	std::multiset<Trigger*>::iterator trigger_it = trigger_set.begin();
-	Trigger* trigger_p;
-	for (trigger_it = trigger_set.begin(); trigger_it != trigger_set.end(); ++trigger_it)
+	std::multiset<Trigger>::const_iterator trigger_it = (*trigger_set).cbegin();
+	//Trigger* trigger_p;
+	
+	for (trigger_it = trigger_set->cbegin(); trigger_it != trigger_set->cend(); ++trigger_it)
 	{
-		trigger_p = *trigger_it;
-		if (trigger_p->GetTime() > last_time)
+		//trigger_p = *trigger_it;
+		if (trigger_it->GetTime() > last_time)
 		{
-			trigger_set.erase(trigger_set.begin(), trigger_it);
-			return; //don't delete Triggers from heap here
+			trigger_set->erase(trigger_set->cbegin(), trigger_it);
+			return; //
 		}
-		trigger_p->Use();
+		trigger_it->Use();
 	}
 	return;
 }
@@ -44,4 +45,9 @@ void TriggerFactory::updateTime(std::chrono::time_point<std::chrono::system_cloc
 	last_time = time;
 	fireAll();
 	return;
+}
+
+void TriggerFactory::clear()
+{
+	delete trigger_set;
 }

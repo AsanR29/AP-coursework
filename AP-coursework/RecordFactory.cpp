@@ -68,6 +68,7 @@ void RecordFactory::clear()
 		delete record_p;
 	}
 	record_map.clear();
+	delete record_collection;
 	return;
 }
 
@@ -176,6 +177,8 @@ void RecordFactory::loadRecords(std::string filename)
 		record_collection->insert(*record);
 		record = new Data_record();
 	}
+	delete record;
+	dump_file.close();
 	return;
 }
 

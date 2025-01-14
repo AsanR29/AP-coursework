@@ -41,21 +41,7 @@ void input_int(int& output)
 	}
 	//return output;
 }
-void input_int(int& output, std::string error_response)
-{
-	std::string dump;
-	output = -1;
-	std::cin >> output;
-	while (std::cin.fail())
-	{
-		std::cin.clear();
-		std::cin >> dump;
 
-		std::cout << error_response;
-		std::cin >> output;
-	}
-	//return output;
-}
 void input_timeofday(int& output_hour, int& output_min, std::string error_response)
 {
 	std::string input;
