@@ -1,0 +1,6 @@
+AP-coursework.sln
+*.vcxproj*
+x64
+.vs*
+AP-coursework/animal_names.csv
+*.txt
